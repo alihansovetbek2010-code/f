@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusHub - Kazakhstan Universities Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>CampusHub</h1>
+                <p class="tagline">Your Gateway to Higher Education in Kazakhstan</p>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" data-page="home" class="nav-link active">Universities</a></li>
+                <li><a href="#" data-page="virtual-tour" class="nav-link">Virtual Tour</a></li>
+                <li><a href="#" data-page="compare" class="nav-link">Compare</a></li>
+                <li><a href="#" data-page="news" class="nav-link">News</a></li>
+                <li><a href="#" data-page="faq" class="nav-link">FAQ</a></li>
+                <li><a href="#" data-page="register" class="nav-link">Register</a></li>
+                <li><a href="#" data-page="pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#" data-page="contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div id="mainContent">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <h1 class="hero-title">Discover Your Future</h1>
+                    <p class="hero-subtitle">Explore Kazakhstan's Top Universities and Programs</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="scrollToSearch()">Start for Free</button>
+                        <button class="btn btn-secondary" onclick="showPage('register')">Book a Consultation</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search and Filter Section -->
+            <section id="searchSection" class="search-section">
+                <div class="container">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search universities, programs, cities..." class="search-input">
+                        <button class="search-btn" onclick="performSearch()">🔍</button>
+                    </div>
+                    
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label>City:</label>
+                            <select id="filterCity" class="filter-select">
+                                <option value="">All Cities</option>
+                                <option value="Almaty">Almaty</option>
+                                <option value="Astana">Astana</option>
+                                <option value="Karaganda">Karaganda</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Field of Study:</label>
+                            <select id="filterField" class="filter-select">
+                                <option value="">All Fields</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Medicine">Medicine</option>
+                                <option value="Business">Business</option>
+                                <option value="IT">IT & Computer Science</option>
+                                <option value="Law">Law</option>
+                                <option value="Arts">Arts & Humanities</option>
+                                <option value="Science">Natural Sciences</option>
+                                <option value="Education">Education</option>
+                                <option value="Pedagogy">Pedagogy</option>
+                                <option value="Economics">Economics</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Dentistry">Dentistry</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Type:</label>
+                            <select id="filterType" class="filter-select">
+                                <option value="">All Types</option>
+                                <option value="Public">Public</option>
+                                <option value="Private">Private</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Language:</label>
+                            <select id="filterLanguage" class="filter-select">
+                                <option value="">All Languages</option>
+                                <option value="Kazakh">Kazakh</option>
+                                <option value="Russian">Russian</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Budget:</label>
+                            <select id="filterBudget" class="filter-select">
+                                <option value="">All Budgets</option>
+                                <option value="free">Free (Grants)</option>
+                                <option value="low">Low (< 500,000 KZT/year)</option>
+                                <option value="medium">Medium (500K - 1M KZT/year)</option>
+                                <option value="high">High (> 1M KZT/year)</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Universities Catalog -->
+            <section class="catalog-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Universities Catalog</h2>
+                        <div class="sort-options">
+                            <label>Sort by:</label>
+                            <select id="sortBy" class="sort-select" onchange="sortUniversities()">
+                                <option value="name">Name</option>
+                                <option value="rating">Rating</option>
+                                <option value="city">City</option>
+                                <option value="price">Price</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="universitiesGrid" class="universities-grid">
+                        <!-- University cards will be dynamically generated -->
+                    </div>
+                    
+                    <div id="noResults" class="no-results" style="display: none;">
+                        <p>No universities found matching your criteria. Try adjusting your filters.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- University Detail Page -->
+        <div id="universityDetailPage" class="page" style="display: none;">
+            <section class="university-header">
+                <div class="container">
+                    <div class="university-header-content">
+                        <div class="university-logo" id="universityLogo">
+                            <div class="logo-placeholder">Logo</div>
+                        </div>
+                        <div class="university-info-header">
+                            <h1 id="universityName">University Name</h1>
+                            <div class="university-meta">
+                                <span class="location" id="universityCity">City</span>
+                                <span class="rating" id="universityRating">★★★★☆ 4.5</span>
+                                <span class="type" id="universityType">Public</span>
+                            </div>
+                            <div class="university-actions">
+                                <button class="btn btn-primary" onclick="addToCompareFromDetail()">Add to Compare</button>
+                                <button class="btn btn-secondary" onclick="showPage('virtual-tour')">Virtual Tour</button>
+                                <button class="btn btn-secondary" onclick="showPage('register')">Apply Now</button>
+                                <button class="btn btn-secondary" onclick="showPage('home')">Back to List</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="university-details">
+                <div class="container">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+                        <button class="tab-btn" data-tab="programs" onclick="switchTab('programs')">Programs</button>
+                        <button class="tab-btn" data-tab="admission" onclick="switchTab('admission')">Admission</button>
+                        <button class="tab-btn" data-tab="international" onclick="switchTab('international')">International</button>
+                        <button class="tab-btn" data-tab="contacts" onclick="switchTab('contacts')">Contacts</button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div class="tab-content active" id="overview">
+                        <div class="detail-section">
+                            <h2>About the University</h2>
+                            <div id="universityHistory" class="content-box">
+                                <h3>History</h3>
+                                <p id="historyText">Loading...</p>
+                            </div>
+                            <div id="universityMission" class="content-box">
+                                <h3>Mission & Goals</h3>
+                                <p id="missionText">Loading...</p>
+                            </div>
+                            <div id="universityAchievements" class="content-box">
+                                <h3>Achievements</h3>
+                                <ul id="achievementsList"></ul>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>Statistics</h2>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statStudents">15,000+</div>
+                                    <div class="stat-label">Students</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statFaculties">12</div>
+                                    <div class="stat-label">Faculties</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statPrograms">50+</div>
+                                    <div class="stat-label">Programs</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statInternational">500+</div>
+                                    <div class="stat-label">International Students</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h2>Leadership</h2>
+                            <div id="universityLeadership" class="content-box">
+                                <p id="leadershipText">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Programs Tab -->
+                    <div class="tab-content" id="programs" style="display: none;">
+                        <div class="detail-section">
+                            <h2>Academic Programs</h2>
+                            <div class="programs-filter">
+                                <button class="filter-chip active" data-level="all" onclick="filterPrograms('all')">All</button>
+                                <button class="filter-chip" data-level="bachelor" onclick="filterPrograms('bachelor')">Bachelor's</button>
+                                <button class="filter-chip" data-level="master" onclick="filterPrograms('master')">Master's</button>
+                                <button class="filter-chip" data-level="phd" onclick="filterPrograms('phd')">PhD</button>
+                            </div>
+                            <div id="programsList" class="programs-list">
+                                <!-- Programs will be dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admission Tab -->
+                    <div class="tab-content" id="admission" style="display: none;">
+                        <div class="detail-section">
+                            <h2>Admission Requirements</h2>
+                            <div class="content-box">
+                                <h3>For Kazakhstani Students</h3>
+                                <ul>
+                                    <li>UNT (Unified National Test) certificate</li>
+                                    <li>High school diploma</li>
+                                    <li>Medical certificate</li>
+                                    <li>Identity document</li>
+                                    <li>Photos</li>
+                                </ul>
+                            </div>
+                            <div class="content-box">
+                                <h3>Application Process</h3>
+                                <ol>
+                                    <li>Submit online application</li>
+                                    <li>Upload required documents</li>
+                                    <li>Pass entrance exams (if required)</li>
+                                    <li>Interview (for some programs)</li>
+                                    <li>Receive admission decision</li>
+                                </ol>
+                            </div>
+                            <div class="content-box">
+                                <h3>Important Deadlines</h3>
+                                <div class="deadline-box">
+                                    <p><strong>Application Deadline:</strong> <span id="deadlineDate">June 15, 2024</span></p>
+                                    <p><strong>Document Submission:</strong> <span id="docDeadline">June 20, 2024</span></p>
+                                    <p><strong>Entrance Exams:</strong> <span id="examDate">July 1-10, 2024</span></p>
+                                </div>
+                            </div>
+                            <div class="content-box">
+                                <h3>Tuition Fees & Scholarships</h3>
+                                <div class="pricing-box">
+                                    <p><strong>Annual Tuition:</strong> <span id="tuitionFee">800,000 - 1,200,000 KZT</span></p>
+                                    <p><strong>Available Scholarships:</strong></p>
+                                    <ul>
+                                        <li>Academic Excellence Scholarship (up to 100% tuition)</li>
+                                        <li>Need-based Financial Aid</li>
+                                        <li>Government Grants</li>
+                                        <li>International Student Scholarships</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- International Tab -->
+                    <div class="tab-content" id="international" style="display: none;">
+                        <div class="detail-section">
+                            <h2>International Cooperation</h2>
+                            <div class="content-box">
+                                <h3>Exchange Programs</h3>
+                                <p>We have partnerships with universities in:</p>
+                                <ul>
+                                    <li>Europe (Erasmus+ program)</li>
+                                    <li>United States</li>
+                                    <li>Asia-Pacific region</li>
+                                    <li>CIS countries</li>
+                                </ul>
+                            </div>
+                            <div class="content-box">
+                                <h3>For International Students</h3>
+                                <h4>Language Requirements</h4>
+                                <ul>
+                                    <li>Kazakh/Russian programs: Language proficiency test</li>
+                                    <li>English programs: IELTS 6.0+ or TOEFL 80+</li>
+                                </ul>
+                                <h4>Visa Information</h4>
+                                <p>International students need a student visa. Our international office provides full support for visa applications.</p>
+                                <h4>Support Services</h4>
+                                <ul>
+                                    <li>Airport pickup</li>
+                                    <li>Accommodation assistance</li>
+                                    <li>Orientation program</li>
+                                    <li>Language courses</li>
+                                    <li>Cultural integration support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contacts Tab -->
+                    <div class="tab-content" id="contacts" style="display: none;">
+                        <div class="detail-section">
+                            <h2>Contact Information</h2>
+                            <div class="contacts-grid">
+                                <div class="contact-card">
+                                    <h3>Main Office</h3>
+                                    <p><strong>Address:</strong> <span id="contactAddress">[Address]</span></p>
+                                    <p><strong>Phone:</strong> <span id="contactPhone">+7 (XXX) XXX-XX-XX</span></p>
+                                    <p><strong>Email:</strong> <span id="contactEmail">info@university.kz</span></p>
+                                </div>
+                                <div class="contact-card">
+                                    <h3>Admission Office</h3>
+                                    <p><strong>Phone:</strong> <span id="admissionPhone">+7 (XXX) XXX-XX-XX</span></p>
+                                    <p><strong>Email:</strong> <span id="admissionEmail">admission@university.kz</span></p>
+                                </div>
+                                <div class="contact-card">
+                                    <h3>International Office</h3>
+                                    <p><strong>Phone:</strong> <span id="internationalPhone">+7 (XXX) XXX-XX-XX</span></p>
+                                    <p><strong>Email:</strong> <span id="internationalEmail">international@university.kz</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Virtual Tour Page -->
+        <div id="virtualTourPage" class="page" style="display: none;">
+            <section class="tour-header">
+                <div class="container">
+                    <h1>Virtual Campus Tour</h1>
+                    <p>Explore campuses from anywhere, anytime - 24/7 availability</p>
+                    <div class="tour-selector">
+                        <label>Select University:</label>
+                        <select id="universitySelector" class="tour-select" onchange="loadTourUniversity()">
+                            <option value="">Choose a university...</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="virtual-tour-section">
+                <div class="container">
+                    <div class="tour-layout">
+                        <div class="panorama-container">
+                            <div id="panoramaViewer" class="panorama-viewer">
+                                <div class="panorama-placeholder">
+                                    <p>Select a university to start the virtual tour</p>
+                                    <p class="panorama-hint">Use mouse to drag and explore • Click hotspots to navigate</p>
+                                </div>
+                            </div>
+                            
+                            <div class="panorama-controls">
+                                <button class="control-btn" onclick="zoomIn()">+</button>
+                                <button class="control-btn" onclick="zoomOut()">-</button>
+                                <button class="control-btn" onclick="resetView()">⟲</button>
+                            </div>
+                        </div>
+
+                        <div class="tour-sidebar">
+                            <div class="tour-map">
+                                <h3>Campus Map</h3>
+                                <div id="campusMap" class="campus-map">
+                                    <div class="map-hotspot" data-location="main-building" style="top: 30%; left: 40%;" onclick="loadPanorama('main-building')">🏛️</div>
+                                    <div class="map-hotspot" data-location="library" style="top: 50%; left: 60%;" onclick="loadPanorama('library')">📚</div>
+                                    <div class="map-hotspot" data-location="dormitory" style="top: 70%; left: 30%;" onclick="loadPanorama('dormitory')">🏠</div>
+                                    <div class="map-hotspot" data-location="cafeteria" style="top: 45%; left: 50%;" onclick="loadPanorama('cafeteria')">🍽️</div>
+                                    <div class="map-hotspot" data-location="sports" style="top: 80%; left: 70%;" onclick="loadPanorama('sports')">⚽</div>
+                                </div>
+                            </div>
+
+                            <div class="tour-locations">
+                                <h3>Locations</h3>
+                                <div class="locations-list">
+                                    <div class="location-item active" data-location="main-building" onclick="loadPanorama('main-building')">
+                                        <span class="location-icon">🏛️</span>
+                                        <div>
+                                            <strong>Main Building</strong>
+                                            <p>Administrative offices and classrooms</p>
+                                        </div>
+                                    </div>
+                                    <div class="location-item" data-location="library" onclick="loadPanorama('library')">
+                                        <span class="location-icon">📚</span>
+                                        <div>
+                                            <strong>Library</strong>
+                                            <p>Study spaces and research resources</p>
+                                        </div>
+                                    </div>
+                                    <div class="location-item" data-location="dormitory" onclick="loadPanorama('dormitory')">
+                                        <span class="location-icon">🏠</span>
+                                        <div>
+                                            <strong>Student Dormitories</strong>
+                                            <p>Comfortable accommodation options</p>
+                                        </div>
+                                    </div>
+                                    <div class="location-item" data-location="cafeteria" onclick="loadPanorama('cafeteria')">
+                                        <span class="location-icon">🍽️</span>
+                                        <div>
+                                            <strong>Cafeteria</strong>
+                                            <p>Dining and social spaces</p>
+                                        </div>
+                                    </div>
+                                    <div class="location-item" data-location="sports" onclick="loadPanorama('sports')">
+                                        <span class="location-icon">⚽</span>
+                                        <div>
+                                            <strong>Sports Complex</strong>
+                                            <p>Fitness and recreational facilities</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Compare Page -->
+        <div id="comparePage" class="page" style="display: none;">
+            <section class="compare-header">
+                <div class="container">
+                    <h1>Compare Universities & Programs</h1>
+                    <p>Select up to 5 universities or programs to compare side by side</p>
+                </div>
+            </section>
+
+            <section class="compare-section">
+                <div class="container">
+                    <div class="compare-selector">
+                        <div class="selector-box">
+                            <label>Select Universities to Compare:</label>
+                            <div class="compare-inputs">
+                                <select id="compare1" class="compare-select">
+                                    <option value="">Select University 1</option>
+                                </select>
+                                <select id="compare2" class="compare-select">
+                                    <option value="">Select University 2</option>
+                                </select>
+                                <select id="compare3" class="compare-select">
+                                    <option value="">Select University 3</option>
+                                </select>
+                                <select id="compare4" class="compare-select">
+                                    <option value="">Select University 4</option>
+                                </select>
+                                <select id="compare5" class="compare-select">
+                                    <option value="">Select University 5</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="performComparison()">Compare Now</button>
+                        </div>
+                    </div>
+
+                    <div id="comparisonTable" class="comparison-table-container" style="display: none;">
+                        <div class="comparison-table-wrapper">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th class="compare-category">Category</th>
+                                        <th class="compare-university" id="uniCol1"></th>
+                                        <th class="compare-university" id="uniCol2"></th>
+                                        <th class="compare-university" id="uniCol3"></th>
+                                        <th class="compare-university" id="uniCol4"></th>
+                                        <th class="compare-university" id="uniCol5"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="compare-label"><strong>Name</strong></td>
+                                        <td id="comp-name-1">-</td>
+                                        <td id="comp-name-2">-</td>
+                                        <td id="comp-name-3">-</td>
+                                        <td id="comp-name-4">-</td>
+                                        <td id="comp-name-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>City</strong></td>
+                                        <td id="comp-city-1">-</td>
+                                        <td id="comp-city-2">-</td>
+                                        <td id="comp-city-3">-</td>
+                                        <td id="comp-city-4">-</td>
+                                        <td id="comp-city-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Type</strong></td>
+                                        <td id="comp-type-1">-</td>
+                                        <td id="comp-type-2">-</td>
+                                        <td id="comp-type-3">-</td>
+                                        <td id="comp-type-4">-</td>
+                                        <td id="comp-type-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Rating</strong></td>
+                                        <td id="comp-rating-1">-</td>
+                                        <td id="comp-rating-2">-</td>
+                                        <td id="comp-rating-3">-</td>
+                                        <td id="comp-rating-4">-</td>
+                                        <td id="comp-rating-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Annual Tuition</strong></td>
+                                        <td id="comp-price-1">-</td>
+                                        <td id="comp-price-2">-</td>
+                                        <td id="comp-price-3">-</td>
+                                        <td id="comp-price-4">-</td>
+                                        <td id="comp-price-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Fields of Study</strong></td>
+                                        <td id="comp-fields-1">-</td>
+                                        <td id="comp-fields-2">-</td>
+                                        <td id="comp-fields-3">-</td>
+                                        <td id="comp-fields-4">-</td>
+                                        <td id="comp-fields-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Languages</strong></td>
+                                        <td id="comp-lang-1">-</td>
+                                        <td id="comp-lang-2">-</td>
+                                        <td id="comp-lang-3">-</td>
+                                        <td id="comp-lang-4">-</td>
+                                        <td id="comp-lang-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Number of Students</strong></td>
+                                        <td id="comp-students-1">-</td>
+                                        <td id="comp-students-2">-</td>
+                                        <td id="comp-students-3">-</td>
+                                        <td id="comp-students-4">-</td>
+                                        <td id="comp-students-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Exchange Programs</strong></td>
+                                        <td id="comp-exchange-1">-</td>
+                                        <td id="comp-exchange-2">-</td>
+                                        <td id="comp-exchange-3">-</td>
+                                        <td id="comp-exchange-4">-</td>
+                                        <td id="comp-exchange-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Dormitories</strong></td>
+                                        <td id="comp-dorm-1">-</td>
+                                        <td id="comp-dorm-2">-</td>
+                                        <td id="comp-dorm-3">-</td>
+                                        <td id="comp-dorm-4">-</td>
+                                        <td id="comp-dorm-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Scholarships Available</strong></td>
+                                        <td id="comp-scholarship-1">-</td>
+                                        <td id="comp-scholarship-2">-</td>
+                                        <td id="comp-scholarship-3">-</td>
+                                        <td id="comp-scholarship-4">-</td>
+                                        <td id="comp-scholarship-5">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="compare-label"><strong>Actions</strong></td>
+                                        <td id="comp-actions-1">-</td>
+                                        <td id="comp-actions-2">-</td>
+                                        <td id="comp-actions-3">-</td>
+                                        <td id="comp-actions-4">-</td>
+                                        <td id="comp-actions-5">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Register Page -->
+        <div id="registerPage" class="page" style="display: none;">
+            <section class="register-section">
+                <div class="container">
+                    <div class="register-container">
+                        <div class="register-header">
+                            <h1>Create Your Account</h1>
+                            <p>Register to get personalized recommendations and stay updated</p>
+                        </div>
+
+                        <form id="registrationForm" class="register-form" onsubmit="handleRegistration(event)">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="interestedFields">Interested Fields of Study</label>
+                                <select id="interestedFields" name="interestedFields" multiple class="multi-select">
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Medicine">Medicine</option>
+                                    <option value="Business">Business</option>
+                                    <option value="IT">IT & Computer Science</option>
+                                    <option value="Law">Law</option>
+                                    <option value="Arts">Arts & Humanities</option>
+                                    <option value="Science">Natural Sciences</option>
+                                </select>
+                                <small>Hold Ctrl/Cmd to select multiple</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="interestedUniversities">Interested Universities</label>
+                                <select id="interestedUniversities" name="interestedUniversities" multiple class="multi-select">
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                                <small>Hold Ctrl/Cmd to select multiple</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                <span id="passwordError" style="color: #ff4444; font-size: 0.9rem; display: none;">Passwords do not match.</span>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="notifications" name="notifications" checked>
+                                    Subscribe to notifications about deadlines, grants, and news
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="terms" name="terms" required>
+                                    I agree to the Terms and Conditions *
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large">Register</button>
+                        </form>
+
+                        <div class="application-section" style="margin-top: 3rem;">
+                            <div class="application-header">
+                                <h2>Submit Application / Inquiry</h2>
+                                <p>Want to apply to a specific university or program? Submit your inquiry below.</p>
+                            </div>
+
+                            <form id="applicationForm" class="application-form" onsubmit="handleApplication(event)">
+                                <div class="form-group">
+                                    <label for="appUniversity">Select University *</label>
+                                    <select id="appUniversity" name="appUniversity" required>
+                                        <option value="">Choose a university...</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appProgram">Select Program</label>
+                                    <select id="appProgram" name="appProgram">
+                                        <option value="">Choose a program...</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appMessage">Your Message / Inquiry *</label>
+                                    <textarea id="appMessage" name="appMessage" rows="5" required placeholder="Tell us about your interest, questions, or application details..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appContactEmail">Contact Email *</label>
+                                    <input type="email" id="appContactEmail" name="appContactEmail" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-secondary btn-large">Submit Application</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- News Page -->
+        <div id="newsPage" class="page" style="display: none;">
+            <section class="news-header">
+                <div class="container">
+                    <h1>News & Blog</h1>
+                    <p>Stay updated with the latest news about education in Kazakhstan</p>
+                </div>
+            </section>
+
+            <section class="news-section">
+                <div class="container">
+                    <div class="news-grid">
+                        <article class="news-card featured">
+                            <div class="news-image">📰</div>
+                            <div class="news-content">
+                                <span class="news-category">Scholarships</span>
+                                <h2>2024 Government Grants Available</h2>
+                                <p class="news-date">March 15, 2024</p>
+                                <p>Applications for state educational grants for the 2024-2025 academic year are now open. Learn about eligibility requirements and application deadlines...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+
+                        <article class="news-card">
+                            <div class="news-image">🎓</div>
+                            <div class="news-content">
+                                <span class="news-category">Admission</span>
+                                <h2>UNT 2024: Important Dates and Changes</h2>
+                                <p class="news-date">March 10, 2024</p>
+                                <p>Everything you need to know about the Unified National Test 2024, including registration dates, exam format, and scoring...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+
+                        <article class="news-card">
+                            <div class="news-image">🌍</div>
+                            <div class="news-content">
+                                <span class="news-category">International</span>
+                                <h2>New Exchange Programs with European Universities</h2>
+                                <p class="news-date">March 5, 2024</p>
+                                <p>Several Kazakh universities have signed new partnership agreements with institutions across Europe, expanding study abroad opportunities...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+
+                        <article class="news-card">
+                            <div class="news-image">💡</div>
+                            <div class="news-content">
+                                <span class="news-category">Tips</span>
+                                <h2>How to Choose the Right University: A Complete Guide</h2>
+                                <p class="news-date">February 28, 2024</p>
+                                <p>Expert advice on selecting the perfect university based on your interests, career goals, and budget considerations...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+
+                        <article class="news-card">
+                            <div class="news-image">🏆</div>
+                            <div class="news-content">
+                                <span class="news-category">Competitions</span>
+                                <h2>Student Research Competition 2024</h2>
+                                <p class="news-date">February 20, 2024</p>
+                                <p>Annual competition for undergraduate and graduate students. Winners receive scholarships and research funding...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+
+                        <article class="news-card">
+                            <div class="news-image">📚</div>
+                            <div class="news-content">
+                                <span class="news-category">Programs</span>
+                                <h2>New IT Programs Launched</h2>
+                                <p class="news-date">February 15, 2024</p>
+                                <p>Several universities have introduced new programs in artificial intelligence, cybersecurity, and data science...</p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- FAQ Page -->
+        <div id="faqPage" class="page" style="display: none;">
+            <section class="faq-header">
+                <div class="container">
+                    <h1>Frequently Asked Questions</h1>
+                    <p>Find answers to common questions about admission, UNT, documents, and universities</p>
+                </div>
+            </section>
+
+            <section class="faq-section">
+                <div class="container">
+                    <div class="faq-categories">
+                        <button class="faq-category-btn active" onclick="filterFAQ('all')">All Questions</button>
+                        <button class="faq-category-btn" onclick="filterFAQ('admission')">Admission</button>
+                        <button class="faq-category-btn" onclick="filterFAQ('unt')">UNT</button>
+                        <button class="faq-category-btn" onclick="filterFAQ('documents')">Documents</button>
+                        <button class="faq-category-btn" onclick="filterFAQ('universities')">Universities</button>
+                        <button class="faq-category-btn" onclick="filterFAQ('scholarships')">Scholarships</button>
+                    </div>
+
+                    <div class="faq-list">
+                        <div class="faq-item" data-category="admission">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>What are the admission requirements for universities in Kazakhstan?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Admission requirements vary by university and program, but generally include:</p>
+                                <ul>
+                                    <li>UNT (Unified National Test) certificate</li>
+                                    <li>High school diploma</li>
+                                    <li>Medical certificate</li>
+                                    <li>Identity document</li>
+                                    <li>Photos</li>
+                                </ul>
+                                <p>Some programs may require additional entrance exams or interviews.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="unt">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>What is UNT and when is it conducted?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>UNT (Unified National Test) is a standardized test required for admission to most universities in Kazakhstan. It is typically conducted in June each year. Registration usually opens in March-April. The test covers subjects based on your chosen field of study.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="documents">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>What documents do I need to prepare for admission?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Required documents typically include:</p>
+                                <ul>
+                                    <li>UNT certificate (original)</li>
+                                    <li>High school diploma (original and copy)</li>
+                                    <li>Medical certificate (form 086-U)</li>
+                                    <li>Identity document (ID card or passport)</li>
+                                    <li>4 photos (3x4 cm)</li>
+                                    <li>Application form</li>
+                                </ul>
+                                <p>Some universities may require additional documents, so check with your chosen institution.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="scholarships">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>How can I get a scholarship or grant?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>There are several types of scholarships available:</p>
+                                <ul>
+                                    <li><strong>State Educational Grants:</strong> Awarded based on UNT scores</li>
+                                    <li><strong>University Scholarships:</strong> Merit-based scholarships offered by individual universities</li>
+                                    <li><strong>Need-based Financial Aid:</strong> For students with financial difficulties</li>
+                                    <li><strong>International Scholarships:</strong> For international students</li>
+                                </ul>
+                                <p>Check with your university's financial aid office for specific requirements and deadlines.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="universities">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>What is the difference between public and private universities?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Public Universities:</strong> Funded by the state, generally lower tuition fees, more traditional programs, state grants available.</p>
+                                <p><strong>Private Universities:</strong> Privately funded, may have higher tuition fees, often more specialized programs, modern facilities, fewer state grants but may offer their own scholarships.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="admission">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>Can I apply to multiple universities?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes, you can apply to multiple universities and programs. However, each application may require separate documents and fees. Make sure to check deadlines for each institution.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="unt">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>What subjects are tested in UNT?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>UNT typically includes:</p>
+                                <ul>
+                                    <li>Kazakh/Russian language (mandatory)</li>
+                                    <li>History of Kazakhstan (mandatory)</li>
+                                    <li>Mathematics (mandatory)</li>
+                                    <li>Two profile subjects based on your field of study</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-category="universities">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h3>Do universities provide accommodation?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Most universities offer dormitory accommodation for students, especially those from other cities. Availability and conditions vary by university. Some universities have modern dormitories with various amenities, while others may have more basic facilities. Contact the university's accommodation office for details.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contactPage" class="page" style="display: none;">
+            <section class="contact-header">
+                <div class="container">
+                    <h1>Contact Us</h1>
+                    <p>We're here to help. Get in touch with us for any questions or support</p>
+                </div>
+            </section>
+
+            <section class="contact-section">
+                <div class="container">
+                    <div class="contact-layout">
+                        <div class="contact-form-container">
+                            <h2>Send Us a Message</h2>
+                            <form id="contactForm" class="contact-form" onsubmit="handleContact(event)">
+                                <div class="form-group">
+                                    <label for="contactName">Your Name *</label>
+                                    <input type="text" id="contactName" name="contactName" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contactEmail">Email Address *</label>
+                                    <input type="email" id="contactEmail" name="contactEmail" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contactPhone">Phone Number</label>
+                                    <input type="tel" id="contactPhone" name="contactPhone">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contactSubject">Subject *</label>
+                                    <select id="contactSubject" name="contactSubject" required>
+                                        <option value="">Select a subject...</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="admission">Admission Questions</option>
+                                        <option value="technical">Technical Support</option>
+                                        <option value="partnership">Partnership Opportunities</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contactMessage">Your Message *</label>
+                                    <textarea id="contactMessage" name="contactMessage" rows="6" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-large">Send Message</button>
+                            </form>
+                        </div>
+
+                        <div class="contact-info-container">
+                            <div class="contact-info-card">
+                                <h3>Contact Information</h3>
+                                <div class="info-item">
+                                    <strong>📧 Email</strong>
+                                    <p>adeka.kaisar@gmail.com</p>
+                                </div>
+                                <div class="info-item">
+                                    <strong>📞 Phone</strong>
+                                    <p>+7 707 993 1801</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CampusHub</h3>
+                    <p>The Best University Catalog Platform of the Year</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPage('home'); return false;">Universities</a></li>
+                        <li><a href="#" onclick="showPage('virtual-tour'); return false;">Virtual Tour</a></li>
+                        <li><a href="#" onclick="showPage('compare'); return false;">Compare</a></li>
+                        <li><a href="#" onclick="showPage('faq'); return false;">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPage('news'); return false;">News & Blog</a></li>
+                        <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+                        <li><a href="#" onclick="showPage('register'); return false;">Register</a></li>
+                        <li><a href="#" onclick="showPage('pricing'); return false;">Pricing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CampusHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
